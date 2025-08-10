@@ -31,11 +31,20 @@ public class UserController {
             return "Email already registered";
         }
 
-        user.setRole("student");
+        if (user.getRole() == null || user.getRole().isBlank()) {
+            user.setRole("student");
+        } else {
+            String role = user.getRole().toLowerCase();
+            if (!role.equals("student") && !role.equals("admin") && !role.equals("faculty")) {
+                return "Invalid role. Allowed roles: student, admin, faculty";
+            }
+            user.setRole(role);
+        }
+
         user.setRegisteredAt(LocalDateTime.now());
         userRepository.save(user);
 
-        return "Student registered successfully";
+        return "User registered successfully as " + user.getRole();
     }
     @PostMapping("/login")
     public String login(@RequestBody User user) {
