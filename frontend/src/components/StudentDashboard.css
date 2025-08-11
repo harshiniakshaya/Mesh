@@ -1,0 +1,185 @@
+.dashboard {
+  display: flex;
+}
+
+.mobile-menu-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  margin: 20px 0 10px;
+}
+
+.classrooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.classroom-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.classroom-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.classroom-info {
+  padding: 12px;
+}
+
+.classroom-title {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.classroom-professor {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.search-filter-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.search-input, .filter-select, .ai-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex: 1;
+}
+
+.filter-select {
+  max-width: 200px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.action-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: white;
+}
+
+.status-progress {
+  background-color: orange;
+}
+
+.status-not-started {
+  background-color: gray;
+}
+
+.no-data-message {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+}
+
+.ai-assistant {
+  background: #fff;
+  border: 1px solid #e1e5e9;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.ai-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.create-button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.create-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.ai-response-box {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #e1e5e9;
+}
+
+.ai-example {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
