@@ -1,0 +1,70 @@
+# This pipeline automatically runs when you push to the 'main' branch
+# and there are changes in the 'Backend' folder.
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - 'Backend/*'
+
+# Use a virtual machine hosted by Microsoft to run the build
+pool:
+  vmImage: 'ubuntu-latest'
+
+# The pipeline is broken into logical stages
+stages:
+- stage: Build
+  displayName: 'Build Stage'
+  jobs:
+  - job: Build
+    displayName: 'Build Maven Project'
+    steps:
+    # Step 1: Set up Java 20
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: '20'
+        jdkArchitecture: 'x64'
+        jdkSourceOption: 'PreInstalled'
+
+    # Step 2: Use Maven to build the project. This creates the executable .jar file.
+    - task: Maven@3
+      displayName: 'Build with Maven'
+      inputs:
+        mavenPomFile: 'Backend/pom.xml'
+        goals: 'package'
+        options: '-DskipTests'
+
+    # Step 3: Copy the final .jar file from the Backend/target folder
+    - task: CopyFiles@2
+      displayName: 'Copy Artifacts'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)/Backend/target'
+        Contents: '*.jar'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    # Step 4: Publish the .jar file so the next stage can use it
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'backend-app'
+        publishLocation: 'Container'
+
+- stage: Deploy
+  displayName: 'Deploy Stage'
+  dependsOn: Build
+  condition: succeeded() # Only run this stage if the Build was successful
+  jobs:
+  - job: Deploy
+    displayName: 'Deploy to Azure App Service'
+    steps:
+    # Step 1: Deploy the .jar file to your Azure App Service
+    - task: AzureWebApp@1
+      displayName: 'Deploy Backend App'
+      inputs:
+        azureSubscription: 'MeshBackend' # Your confirmed service connection name
+        appType: 'webAppLinux'
+        appName: 'mesh-backend' 
+        package: '$(Agent.BuildDirectory)//*.jar'
+        runtimeStack: 'JAVA|20-java20'
