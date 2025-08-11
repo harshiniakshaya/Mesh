@@ -24,6 +24,12 @@
     <java.version>20</java.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>google</id>
+      <url>https://maven.google.com</url> </repository>
+  </repositories>
+
   <dependencies>
 
     <!-- Spring Boot Starter -->
@@ -103,5 +109,7 @@
       </plugin>
     </plugins>
   </build>
+
+
 
 </project>

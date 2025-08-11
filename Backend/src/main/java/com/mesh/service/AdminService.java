@@ -15,6 +15,7 @@ public class AdminService {
 
     /**
      * Creates a single user. Throws an exception if the email already exists.
+     *
      * @param user The user object to be created.
      * @return The saved user.
      */

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.*;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -96,12 +97,69 @@ public class ClassroomService {
         }
 
         section.getMaterials().add(material);
-        return classroomRepository.save(classroom);
+        Classroom savedClassroom = classroomRepository.save(classroom);
+
+        return savedClassroom;
     }
 
     public Classroom createAssignment(String classroomId, Assignment assignment, String facultyEmail) {
         Classroom classroom = findClassroomAndVerifyFaculty(classroomId, facultyEmail);
         classroom.getAssignments().add(assignment);
+        return classroomRepository.save(classroom);
+    }
+
+    public Classroom joinClassroom(String classroomCode, String studentEmail) {
+        User student = userRepository.findByEmail(studentEmail)
+                .orElseThrow(() -> new RuntimeException("Student user not found."));
+
+        Classroom classroom = classroomRepository.findByClassroomCode(classroomCode)
+                .orElseThrow(() -> new RuntimeException("Classroom with code '" + classroomCode + "' not found."));
+
+        // Check if student is already enrolled
+        if (classroom.getStudentIds().contains(student.getId())) {
+            throw new IllegalArgumentException("Student is already enrolled in this classroom.");
+        }
+
+        classroom.getStudentIds().add(student.getId());
+        return classroomRepository.save(classroom);
+    }
+
+    public List<Classroom> findClassroomsByStudent(String studentEmail) {
+        User student = userRepository.findByEmail(studentEmail)
+                .orElseThrow(() -> new RuntimeException("Student user not found."));
+        return classroomRepository.findByStudentIdsContains(student.getId());
+    }
+
+    public Classroom submitAssignment(String classroomId, String assignmentId, MultipartFile file, String studentEmail) throws IOException {
+        User student = userRepository.findByEmail(studentEmail)
+                .orElseThrow(() -> new RuntimeException("Student user not found."));
+
+        Classroom classroom = classroomRepository.findById(classroomId)
+                .orElseThrow(() -> new RuntimeException("Classroom not found."));
+
+        // Verify student is enrolled
+        if (!classroom.getStudentIds().contains(student.getId())) {
+            throw new SecurityException("You are not enrolled in this classroom.");
+        }
+
+        Assignment assignment = classroom.getAssignments().stream()
+                .filter(a -> a.getId().equals(assignmentId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Assignment not found."));
+
+        // Upload file to Azure
+        String fileUrl = azureBlobService.uploadFile(file);
+
+        // Create the submission object
+        Submission newSubmission = new Submission();
+        newSubmission.setStudentId(student.getId());
+        newSubmission.setStudentName(student.getName());
+        newSubmission.setSubmittedFileUrl(fileUrl);
+
+        // Remove any previous submission from the same student to allow resubmission
+        assignment.getSubmissions().removeIf(sub -> sub.getStudentId().equals(student.getId()));
+        assignment.getSubmissions().add(newSubmission);
+
         return classroomRepository.save(classroom);
     }
 }

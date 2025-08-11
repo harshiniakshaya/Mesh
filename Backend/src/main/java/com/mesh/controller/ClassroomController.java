@@ -61,4 +61,14 @@ public class ClassroomController {
         return ResponseEntity.ok(updatedClassroom);
     }
 
+    @PostMapping("/{classroomId}/assignments/{assignmentId}/submit")
+    public ResponseEntity<Classroom> submitAssignment(
+            @PathVariable String classroomId,
+            @PathVariable String assignmentId,
+            @RequestParam("file") MultipartFile file,
+            Principal principal) throws IOException {
+
+        Classroom updatedClassroom = classroomService.submitAssignment(classroomId, assignmentId, file, principal.getName());
+        return ResponseEntity.ok(updatedClassroom);
+    }
 }
