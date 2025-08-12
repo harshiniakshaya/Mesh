@@ -1,0 +1,209 @@
+/* FacultyDashboard.css - for FacultyDashboard.jsx */
+
+/* design tokens */
+:root{
+  --sidebar-width: 240px;
+  --bg: #f7fafc;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --primary: #0f1724;
+  --accent: #0369a1;
+  --table-border: #eef6fb;
+}
+
+/* layout */
+.dashboard {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* mobile menu toggle (button in your JSX) */
+.mobile-menu-toggle {
+  display: none;
+}
+@media (max-width: 1024px) {
+  .mobile-menu-toggle {
+    display: block;
+    position: fixed;
+    left: 12px;
+    top: 12px;
+    z-index: 1100;
+    background: white;
+    border: 1px solid #e6eef6;
+    border-radius: 10px;
+    padding: 8px 10px;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+    cursor: pointer;
+  }
+}
+
+/* main content sits right of sidebar on desktop */
+.main-content {
+  margin-left: var(--sidebar-width);
+  padding: 48px 56px;
+  transition: margin-left .25s ease;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* smaller screens remove left margin (sidebar becomes off-canvas) */
+@media (max-width: 1024px) {
+  .main-content { margin-left: 0; padding: 24px; }
+}
+
+/* page header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* create button (pill like) */
+.create-button {
+  background: #f1f5f9;
+  color: var(--accent);
+  border: 1px solid #e6f2fb;
+  padding: 10px 16px;
+  font-weight: 600;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.create-button:hover { background: #eef6fb; }
+
+/* sections */
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 6px 0 12px;
+  color: var(--primary);
+}
+
+/* table container */
+.table-container {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 8px;
+  border: 1px solid var(--table-border);
+  box-shadow: 0 4px 12px rgba(2,6,23,0.04);
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table thead th {
+  text-align: left;
+  padding: 16px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 1px solid var(--table-border);
+  background: transparent;
+}
+.table tbody td {
+  padding: 18px 16px;
+  border-bottom: 1px solid rgba(15,23,36,0.04);
+  color: var(--primary);
+}
+.table tbody tr:last-child td { border-bottom: none; }
+.action-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* recent activity list */
+.activity-item {
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  margin-bottom:14px;
+}
+.activity-icon {
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  background: #eef6fb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--accent);
+  font-size:18px;
+  flex-shrink:0;
+}
+.activity-content h4 { margin:0 0 6px; font-size:16px; color:var(--primary); }
+.activity-content p { margin:0; color:#6b7280; }
+.activity-time { display:block; margin-top:6px; color:#9ca3af; font-size:13px; }
+
+/* modal overlay & box (scoped to dashboard) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  width: 420px;
+  max-width: 92%;
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(2,6,23,0.18);
+  box-sizing: border-box;
+}
+.modal-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+.modal-title { font-size:18px; font-weight:700; color:var(--primary); margin:0; }
+.close-button {
+  background:transparent; border:none; font-size:22px; cursor:pointer;
+}
+
+/* forms */
+.form-group { margin-bottom:12px; }
+.form-label { display:block; margin-bottom:6px; font-weight:600; color:#374151; }
+.form-input, textarea.form-input {
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid #e6eef6;
+  font-size:14px;
+  box-sizing:border-box;
+}
+
+/* modal action buttons */
+.modal-actions {
+  display:flex;
+  gap:12px;
+  justify-content:flex-end;
+  margin-top:8px;
+}
+.cancel-button {
+  padding:10px 14px;
+  border-radius:8px;
+  border:1px solid #e6eef6;
+  background:white;
+  cursor:pointer;
+}
+
+/* small screens adjustments */
+@media (max-width: 640px) {
+  .page-title { font-size: 24px; }
+  .table thead th, .table tbody td { padding: 12px; }
+}
