@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Service
@@ -28,13 +30,22 @@ public class AzureBlobService {
     }
 
     public String uploadFile(MultipartFile file) throws IOException {
-        // Generate a unique file name to prevent overwrites
         String fileName = UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
-
         BlobClient blobClient = containerClient.getBlobClient(fileName);
-
         blobClient.upload(file.getInputStream(), file.getSize(), true);
-
         return blobClient.getBlobUrl();
+    }
+
+    public void deleteFile(String fileUrl) {
+        try {
+            String fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
+            fileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
+            BlobClient blobClient = containerClient.getBlobClient(fileName);
+            if (blobClient.exists()) {
+                blobClient.delete();
+            }
+        } catch (Exception e) {
+            System.err.println("Error deleting blob: " + e.getMessage());
+        }
     }
 }
