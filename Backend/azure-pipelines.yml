@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - main # This pipeline runs when you push to the main branch
+      - feature/backend/login-signup-api-1
 
 pool:
   vmImage: 'ubuntu-latest'
