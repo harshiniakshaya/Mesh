@@ -27,7 +27,7 @@ stages:
             inputs:
               command: 'buildAndPush'
               # This points to the Dockerfile in your repository's root
-              dockerfile: '$(Build.SourcesDirectory)/Mesh/Dockerfile'
+              dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
               containerRegistry: $(acrServiceConnection)
               repository: $(imageName)
               tags: |
