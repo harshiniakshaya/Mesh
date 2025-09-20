@@ -1,13 +1,12 @@
-# Stage 1: Build the application with Maven
-FROM maven:3.8-openjdk-17 AS build
+# Stage 1: The Builder (Now using Java 21)
+FROM maven:3.9.7-sapmachine-21 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Stage 2: Create the final, lightweight image
+# Stage 2: The Runner
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-# Copy only the built .jar from the 'build' stage
 COPY --from=build /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
