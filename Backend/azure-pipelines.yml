@@ -7,12 +7,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  # --- ‼️ CHANGE THESE THREE VALUES ‼️ ---
-  acrLoginServer: 'meshappregistry.azurecr.io'   # The "Login server" from your ACR in the Azure Portal
-  acrServiceConnection: 'acr-connection'            # The service connection name you created
-  imageName: 'mesh-monolithic-app'                  # The name for your application's image
-
-  # --- You don't need to change these ---
+  acrLoginServer: 'meshappregistry.azurecr.io'
+  acrServiceConnection: 'acr-connection'
+  imageName: 'mesh-monolithic-app'
   imageTag: '$(Build.BuildId)'
 
 stages:
@@ -23,15 +20,13 @@ stages:
         displayName: 'Build and Push to ACR'
         steps:
           - task: Docker@2
-              # ... (other parts of the file) ...
-              displayName: 'Build and Push'
-              inputs:
-                command: 'buildAndPush'
-                # This is the final, correct path
-                dockerfile: '$(Build.SourcesDirectory)/Backend/Dockerfile'
-                containerRegistry: $(acrServiceConnection)
-                repository: $(imageName)
-              # ... (rest of the file) ...
+            displayName: 'Build and Push'
+            inputs:
+              command: 'buildAndPush'
+              # This path should be correct now
+              dockerfile: '$(Build.SourcesDirectory)/Backend/Dockerfile'
+              containerRegistry: $(acrServiceConnection)
+              repository: $(imageName)
               tags: |
                 $(imageTag)
                 latest
