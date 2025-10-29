@@ -202,6 +202,56 @@
   cursor:pointer;
 }
 
+.success-message {
+  text-align: center;
+  padding: 10px 0 20px;
+}
+.success-message h3 {
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.success-message p {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.classroom-code-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg); /* A light background color */
+  border: 1px dashed var(--table-border);
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.final-code {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+.copy-button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: white;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+.copy-button:hover {
+    background: #eef6fb;
+}
+
+/* Updated table style for the code column */
+.code-display {
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+}
+
+
 /* small screens adjustments */
 @media (max-width: 640px) {
   .page-title { font-size: 24px; }
